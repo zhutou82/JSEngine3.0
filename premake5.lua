@@ -10,6 +10,11 @@ workspace "JSEngine3.0"
 	}
   
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+vendordir = "vendor"
+
+vendorIncludeDir = {}
+vendorIncludeDir["bgfx"] = "vendor/bgfx"
+
 
 project "JSEngine3.0"
 	location "JSEngine3.0"
@@ -32,25 +37,43 @@ project "JSEngine3.0"
 
 	defines
 	{
-		"_CRT_SECURE_NO_WARNINGS"
+    "__STDC_LIMIT_MACROS",
+    "__STDC_FORMAT_MACROS",
+    "__STDC_CONSTANT_MACROS",
+    "_DEBUG",
+    "WIN32",
+    "_WIN32",
+    "_HAS_EXCEPTIONS",
+    "_SCL_SECURE",
+    "_SECURE_SCL",
+    "_SCL_SECURE_NO_WARNINGS",
+    "_CRT_SECURE_NO_WARNINGS",
+    "_CRT_SECURE_NO_DEPRECATE",
+    "_WIN64",
+    "ENTRY_CONFIG_IMPLEMENT_MAIN=1"
 	}
 
 	includedirs
 	{
-		"%{prj.name}/src",
-		"%{prj.name}/vendor/spdlog/include"
-		-- "%{IncludeDir.GLFW}"
+		"%{prj.name}/vendor/spdlog/include",
+    "%{vendorIncludeDir.bgfx}/bx/include/compat/msvc",
+    "%{vendorIncludeDir.bgfx}/bx/include",
+    "%{vendorIncludeDir.bgfx}/bimg/include",
+    "%{vendorIncludeDir.bgfx}/bgfx/include",
+    "%{vendorIncludeDir.bgfx}/bgfx/3rdparty",
+    "%{vendorIncludeDir.bgfx}/bgfx/examples/common"
+    
 	}
-
-	-- links 
-	-- { 
-		-- "GLFW",
-    -- "opengl32.lib"
-	-- }
+	links 
+	{ 
+    "DelayImp.lib",
+    "gdi32.lib",
+    "psapi.lib"
+	}
 
 	filter "system:windows"
 		systemversion "latest"
-
+    
 		defines
 		{
 			"JSENGINE_PLATFORM_WINDOWS",
